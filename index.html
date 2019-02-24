@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Find Me A Book</title>
+		<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<script type="text/javascript" src="./index.js"></script>
+		<style type="text/css">
+			#content {
+					transition: opacity 2.0s ease-in;
+			}
+		</style>
+	</head>
+	<body>
+
+
+		  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h1 class="mt-5">Find a Book</h1>
+        <p class="lead">Put in a category to get a list of books. Sourced from <a target="_blank" href="http://openlibrary.org">open library</a></p>
+        <input type="text" name="bookcategory" placeholder="Enter Category">
+			<button type="button" onclick="getBooks()">Fetch Data</button>
+        <div id="content"></div>
+      </div>
+    </div>
+  </div>
+	</body>
+</html>
