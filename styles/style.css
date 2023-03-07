@@ -3,4 +3,25 @@ p {
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    font-size: 12px;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.col-md-4 {
+    max-width: 25%;
+}
+
+.book-title {
+    font-weight: bold;
+}
+
+.card-body {
+    padding: 0.5rem;
+}
+
+.button {
+    font-size: 11px;
 }
