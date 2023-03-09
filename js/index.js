@@ -36,7 +36,7 @@ function buildABook(book, bookInfo) {
     bookCollectedInfo.authorsKey = book.authors[0].key
     bookCollectedInfo.authorsName = book.authors[0].name
 
-    return bookCollectedInfo
+    insertBookintoHTML(bookCollectedInfo)
 }
 
 // grabs books from OpenLib
@@ -50,13 +50,7 @@ function getBooks(event) {
             }
             else {
                 data.works.filter(book => book.availability && book.availability.isbn).forEach((book) => {
-                    fetch(`http://openlibrary.org${book.key}.json`).then(response => response.json()).then(bookInfo => {
-
-                        let constructedBookInfo = buildABook(book, bookInfo)
-                        
-                        insertBookintoHTML(constructedBookInfo)
-
-                    })
+                    fetch(`http://openlibrary.org${book.key}.json`).then(response => response.json()).then(bookInfo => buildABook(book, bookInfo))
                 });
             }
         })
