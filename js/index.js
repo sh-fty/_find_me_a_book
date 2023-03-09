@@ -11,63 +11,60 @@ searchTxt.addEventListener('keypress', function (e) {
 
         searchBtn.disabled = true
         searchTxt.disabled = true
-        
+
         setTimeout(function () {
             searchBtn.disabled = false
-            searchTxt.disabled = false            
+            searchTxt.disabled = false
         }, 2000)
 
     }
 })
 
+// create book object
+function buildABook(book, bookInfo) {
+    let bookCollectedInfo = {}
+
+    if (!bookInfo.description) {
+        bookCollectedInfo.desc = ''
+    } else {
+        bookCollectedInfo.desc = bookInfo.description.value
+    }
+
+    bookCollectedInfo.isbn = book.availability.isbn ? book.availability.isbn : 'isbn'
+    bookCollectedInfo.key = book.key
+    bookCollectedInfo.title = book.title
+    bookCollectedInfo.authorsKey = book.authors[0].key
+    bookCollectedInfo.authorsName = book.authors[0].name
+
+    return bookCollectedInfo
+}
+
 // grabs books from OpenLib
 function getBooks(event) {
     document.getElementById('content').innerHTML = "";
-    
-    fetch(`http://openlibrary.org/subjects/${document.getElementsByName('bookcategory')[0].value}.json?details=false&limit=10`)
-        .then(response => response.json())
+
+    fetch(`http://openlibrary.org/subjects/${document.getElementsByName('bookcategory')[0].value}.json?details=false&limit=10`).then(response => response.json())
         .then(data => {
             if (data.works.length === 0) {
                 writeDefault();
-            } else {
-                data.works
-                .filter(book => {
-                    return book.availability && book.availability.isbn
-                })
-                .forEach((book) => {
-    fetch(`http://openlibrary.org${book.key}.json`)
-        .then(response => response.json())
-        .then(bookInfo => {
-
-            let bookCollectedInfo = {}
-
-            if(!bookInfo.description) {
-                bookCollectedInfo.desc = 'no description provided'
-            } else {
-                bookCollectedInfo.desc = bookInfo.description.value
             }
-            
-            bookCollectedInfo.isbn = book.availability.isbn ? book.availability.isbn : 'isbn'
-            bookCollectedInfo.key = book.key
-            bookCollectedInfo.title = book.title
-            bookCollectedInfo.authorsKey = book.authors[0].key
-            bookCollectedInfo.authorsName = book.authors[0].name
+            else {
+                data.works.filter(book => book.availability && book.availability.isbn).forEach((book) => {
+                    fetch(`http://openlibrary.org${book.key}.json`).then(response => response.json()).then(bookInfo => {
 
-            writeToDoc(bookCollectedInfo)
+                        let constructedBookInfo = buildABook(book, bookInfo)
+                        
+                        insertBookintoHTML(constructedBookInfo)
 
-        })
+                    })
                 });
             }
         })
-    .catch(err => {
-        console.log(err)
-    });
+        .catch(err => console.log(err));
 }
 
 // places results into html
-function writeToDoc(book) {
-
-    console.log(book)
+function insertBookintoHTML(book) {
 
     document.getElementById('content').innerHTML
         += `<div class="col-md-4">
